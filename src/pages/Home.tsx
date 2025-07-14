@@ -171,7 +171,7 @@ export const Home: React.FC = () => {
               <Card key={property.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src={property.images?.[0] || 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=400'}
+                    src={property.images?.[0] || '/vente-villa-avec-piscine-ngaparou-4909044200.jpg'}
                     alt={property.title}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                   />
