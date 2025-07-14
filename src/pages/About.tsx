@@ -13,19 +13,19 @@ export const About: React.FC = () => {
     {
       name: 'Mariama korka balde Sow',
       role: 'Directrice Commerciale',
-      image: '/Mariama Sow',
+      image: '/Mariama Sow.jpg',
       description: 'Experte en négociation et relation client'
     },
     {
-      name: 'Moussa Ba',
+      name: 'Abib Ifra Sy',
       role: 'Responsable Investissements',
-      image: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=300',
+      image: '/Abib Ifra Sy.jpg',
       description: 'Spécialiste en analyse financière immobilière'
     },
     {
-      name: 'Aïcha Ndiaye',
+      name: 'Absa Seck',
       role: 'Directrice Marketing',
-      image: 'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=300',
+      image: '/Absa Seck.jpg',
       description: 'Innovation digitale et stratégie marketing'
     }
   ]
