@@ -5,9 +5,9 @@ import { Card, CardContent } from '../components/ui/Card'
 export const About: React.FC = () => {
   const team = [
     {
-      name: 'Amadou Diallo',
+      name: 'Ibra Beye',
       role: 'Directeur Général',
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300',
+      image: '/Ibra Beye.jpg',
       description: '15 ans d\'expérience dans l\'immobilier sénégalais'
     },
     {
