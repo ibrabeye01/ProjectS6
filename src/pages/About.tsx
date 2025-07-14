@@ -11,9 +11,9 @@ export const About: React.FC = () => {
       description: '15 ans d\'expérience dans l\'immobilier sénégalais'
     },
     {
-      name: 'Fatou Sall',
+      name: 'Mariama korka balde Sow',
       role: 'Directrice Commerciale',
-      image: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=300',
+      image: '/Mariama Sow',
       description: 'Experte en négociation et relation client'
     },
     {
