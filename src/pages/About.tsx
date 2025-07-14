@@ -11,7 +11,7 @@ export const About: React.FC = () => {
       description: '15 ans d\'expérience dans l\'immobilier sénégalais'
     },
     {
-      name: 'Mariama korka balde Sow',
+      name: 'Mariama korka balde Sow',
       role: 'Directrice Commerciale',
       image: '/Mariama Sow.jpg',
       description: 'Experte en négociation et relation client'
