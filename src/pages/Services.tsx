@@ -164,7 +164,7 @@ export const Services: React.FC = () => {
                     <div className="flex">
                       <div className="w-32 h-24 flex-shrink-0">
                         <img
-                          src={property.images?.[0] || 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=200'}
+                          src={property.images?.[0] || '/vente-villa-avec-piscine-ngaparou-4909044200.jpg'}
                           alt={property.title}
                           className="w-full h-full object-cover"
                         />
