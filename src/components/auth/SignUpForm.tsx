@@ -136,6 +136,18 @@ export const SignUpForm: React.FC = () => {
               <div className="text-xs text-gray-500">Vendre ou gérer</div>
             </div>
           </label>
+          <label className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 col-span-2">
+            <input
+              type="radio"
+              value="admin"
+              {...register('role', { required: 'Veuillez sélectionner un type de compte' })}
+              className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300"
+            />
+            <div className="ml-3">
+              <div className="text-sm font-medium text-gray-900">Administrateur</div>
+              <div className="text-xs text-gray-500">Gestion complète de la plateforme</div>
+            </div>
+          </label>
         </div>
         {errors.role && (
           <p className="text-sm text-red-600 mt-1">{errors.role.message}</p>

@@ -318,7 +318,7 @@ export const Home: React.FC = () => {
               </Button>
             </Link>
             <Link to="/services">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-emerald-600">
+              <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
                 Découvrir nos services
               </Button>
             </Link>

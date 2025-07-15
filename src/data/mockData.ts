@@ -32,6 +32,13 @@ export const mockUsers: MockUser[] = [
     role: 'admin'
   },
   {
+    id: 'admin_2',
+    full_name: 'Administrateur Démo',
+    email: 'admin.demo@immosenegal.com',
+    phone: '+221 77 000 00 01',
+    role: 'admin'
+  },
+  {
     id: 'agent_1',
     full_name: 'Mariama Sow',
     email: 'mariama@immosenegal.com',
@@ -46,10 +53,24 @@ export const mockUsers: MockUser[] = [
     role: 'agent'
   },
   {
+    id: 'agent_3',
+    full_name: 'Agent Démo',
+    email: 'agent.demo@immosenegal.com',
+    phone: '+221 77 000 00 02',
+    role: 'agent'
+  },
+  {
     id: 'client_1',
     full_name: 'Absa Seck',
     email: 'absa@email.com',
     phone: '+221 77 456 78 90',
+    role: 'client'
+  },
+  {
+    id: 'client_2',
+    full_name: 'Client Démo',
+    email: 'client.demo@immosenegal.com',
+    phone: '+221 77 000 00 03',
     role: 'client'
   }
 ]

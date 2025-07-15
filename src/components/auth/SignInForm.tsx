@@ -17,7 +17,7 @@ export const SignInForm: React.FC = () => {
   const navigate = useNavigate()
   const { signIn } = useAuthStore()
   
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignInForm>({
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<SignInForm>({
     defaultValues: {
       email: '',
       password: '',
@@ -112,6 +112,70 @@ export const SignInForm: React.FC = () => {
         {isSubmitting ? 'Connexion...' : 'Se connecter'}
       </Button>
 
+      {/* Comptes de démonstration */}
+      <div className="mt-6 pt-6 border-t border-gray-200">
+        <p className="text-sm text-gray-600 text-center mb-4">
+          Comptes de démonstration
+        </p>
+        <div className="space-y-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-full text-left justify-start"
+            onClick={() => {
+              setValue('email', 'admin@immosenegal.com')
+              setValue('password', 'admin123')
+            }}
+          >
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
+              <div>
+                <div className="font-medium">Administrateur</div>
+                <div className="text-xs text-gray-500">admin@immosenegal.com</div>
+              </div>
+            </div>
+          </Button>
+          
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-full text-left justify-start"
+            onClick={() => {
+              setValue('email', 'mariama@immosenegal.com')
+              setValue('password', 'agent123')
+            }}
+          >
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+              <div>
+                <div className="font-medium">Agent</div>
+                <div className="text-xs text-gray-500">mariama@immosenegal.com</div>
+              </div>
+            </div>
+          </Button>
+          
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-full text-left justify-start"
+            onClick={() => {
+              setValue('email', 'absa@email.com')
+              setValue('password', 'client123')
+            }}
+          >
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+              <div>
+                <div className="font-medium">Client</div>
+                <div className="text-xs text-gray-500">absa@email.com</div>
+              </div>
+            </div>
+          </Button>
+        </div>
+      </div>
       <div className="text-center">
         <span className="text-sm text-gray-600">
           Pas encore de compte ?{' '}

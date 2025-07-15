@@ -56,6 +56,15 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: true,
           profile: newUser,
         })
+        
+        // Redirection selon le rôle
+        if (newUser.role === 'admin') {
+          window.location.href = '/dashboard'
+        } else if (newUser.role === 'agent') {
+          window.location.href = '/dashboard'
+        } else {
+          window.location.href = '/dashboard'
+        }
       },
 
       signOut: () => {
