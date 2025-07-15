@@ -216,12 +216,46 @@ export const Services: React.FC = () => {
                 Biens à Louer
               </h3>
               <div className="space-y-6">
-                {mockProperties.filter(p => p.status === 'disponible').slice(3, 6).map((property) => (
+                {[
+                  {
+                    id: 'rent_1',
+                    title: 'Appartement meublé 2 chambres - Almadies',
+                    location: 'Almadies',
+                    region: 'Dakar',
+                    price: 850000,
+                    surface: 85,
+                    bedrooms: 2,
+                    bathrooms: 1,
+                    images: ['/appartement avec piscine.jpeg']
+                  },
+                  {
+                    id: 'rent_2',
+                    title: 'Villa avec jardin - Saly',
+                    location: 'Saly',
+                    region: 'Thiès',
+                    price: 1200000,
+                    surface: 200,
+                    bedrooms: 3,
+                    bathrooms: 2,
+                    images: ['/maison a louer.jpeg']
+                  },
+                  {
+                    id: 'rent_3',
+                    title: 'Studio moderne - Plateau',
+                    location: 'Plateau',
+                    region: 'Dakar',
+                    price: 450000,
+                    surface: 45,
+                    bedrooms: 1,
+                    bathrooms: 1,
+                    images: ['/maisson a vendre.jpg']
+                  }
+                ].map((property) => (
                   <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="flex">
                       <div className="w-32 h-24 flex-shrink-0">
                         <img
-                          src={property.images?.[0] || '/maison a louer.jpeg'}
+                          src={property.images?.[0]}
                           alt={property.title}
                           className="w-full h-full object-cover"
                         />
@@ -232,7 +266,7 @@ export const Services: React.FC = () => {
                             {property.title}
                           </h4>
                           <span className="text-blue-600 font-bold text-sm">
-                            {formatCFA(Math.round(property.price * 0.05))}/mois
+                            {formatCFA(property.price)}/mois
                           </span>
                         </div>
                         <div className="flex items-center text-gray-600 text-xs mb-2">

@@ -21,7 +21,18 @@ export const useAuthStore = create<AuthState>()(
         // Simulation d'une authentification
         const user = mockUsers.find(u => u.email === email)
         
-        if (!user || password !== 'password123') {
+        if (!user) {
+          throw new Error('Invalid credentials')
+        }
+        
+        // Mots de passe par défaut selon le rôle
+        const defaultPasswords = {
+          admin: 'admin123',
+          agent: 'agent123',
+          client: 'client123'
+        }
+        
+        if (password !== defaultPasswords[user.role]) {
           throw new Error('Invalid credentials')
         }
 

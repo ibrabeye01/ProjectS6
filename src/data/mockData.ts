@@ -26,29 +26,29 @@ export interface MockProperty {
 export const mockUsers: MockUser[] = [
   {
     id: 'admin_1',
-    full_name: 'Amadou Diallo',
+    full_name: 'Ibra Beye',
     email: 'admin@immosenegal.com',
     phone: '+221 77 123 45 67',
     role: 'admin'
   },
   {
     id: 'agent_1',
-    full_name: 'Fatou Sall',
-    email: 'fatou@immosenegal.com',
+    full_name: 'Mariama Sow',
+    email: 'mariama@immosenegal.com',
     phone: '+221 77 234 56 78',
     role: 'agent'
   },
   {
     id: 'agent_2',
-    full_name: 'Moussa Ba',
-    email: 'moussa@immosenegal.com',
+    full_name: 'Abib Ifra Sy',
+    email: 'abib@immosenegal.com',
     phone: '+221 77 345 67 89',
     role: 'agent'
   },
   {
     id: 'client_1',
-    full_name: 'Aïcha Ndiaye',
-    email: 'aicha@email.com',
+    full_name: 'Absa Seck',
+    email: 'absa@email.com',
     phone: '+221 77 456 78 90',
     role: 'client'
   }
@@ -68,7 +68,7 @@ export const mockProperties: MockProperty[] = [
     district: 'Almadies',
     region: 'Dakar',
     status: 'disponible',
-    images: ['https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800'],
+    images: ['/vente-villa-avec-piscine-ngaparou-4909044200.jpg'],
     agent_id: 'agent_1'
   },
   {
@@ -84,7 +84,7 @@ export const mockProperties: MockProperty[] = [
     district: 'Plateau',
     region: 'Dakar',
     status: 'disponible',
-    images: ['https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=800'],
+    images: ['/appartement avec piscine.jpeg'],
     agent_id: 'agent_2'
   },
   {
@@ -100,7 +100,7 @@ export const mockProperties: MockProperty[] = [
     district: 'Saly',
     region: 'Thiès',
     status: 'disponible',
-    images: ['https://images.pexels.com/photos/1029599/pexels-photo-1029599.jpeg?auto=compress&cs=tinysrgb&w=800'],
+    images: ['/vente-villa-saly-4332581700.jpg'],
     agent_id: 'agent_1'
   },
   {
@@ -116,7 +116,7 @@ export const mockProperties: MockProperty[] = [
     district: 'Mermoz',
     region: 'Dakar',
     status: 'loué',
-    images: ['https://images.pexels.com/photos/2883049/pexels-photo-2883049.jpeg?auto=compress&cs=tinysrgb&w=800'],
+    images: ['/maisson a vendre.jpg'],
     agent_id: 'agent_2'
   },
   {
@@ -132,7 +132,7 @@ export const mockProperties: MockProperty[] = [
     district: 'Centre',
     region: 'Thiès',
     status: 'en_négociation',
-    images: ['https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800'],
+    images: ['/maison a louer.jpeg'],
     agent_id: 'agent_1'
   },
   {
@@ -148,7 +148,7 @@ export const mockProperties: MockProperty[] = [
     district: 'Médina',
     region: 'Dakar',
     status: 'vendu',
-    images: ['https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800'],
+    images: ['/appartement avec piscine.jpeg'],
     agent_id: 'agent_2'
   }
 ]

@@ -86,7 +86,7 @@ export const PropertyDetail: React.FC = () => {
             <Card>
               <div className="aspect-w-16 aspect-h-9">
                 <img 
-                  src={property.images?.[0] || 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800'}
+                  src={property.images?.[0] || '/vente-villa-avec-piscine-ngaparou-4909044200.jpg'}
                   alt={property.title}
                   className="w-full h-96 object-cover rounded-t-lg"
                 />
