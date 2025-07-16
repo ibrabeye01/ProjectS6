@@ -124,15 +124,15 @@ export const SignInForm: React.FC = () => {
             size="sm"
             className="w-full text-left justify-start"
             onClick={() => {
-              setValue('email', 'admin@immosenegal.com')
-              setValue('password', 'admin123')
+              setValue('email', 'admin.demo@immosenegal.com')
+              setValue('password', 'demo123456')
             }}
           >
             <div className="flex items-center">
               <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
               <div>
                 <div className="font-medium">Administrateur</div>
-                <div className="text-xs text-gray-500">admin@immosenegal.com</div>
+                <div className="text-xs text-gray-500">admin.demo@immosenegal.com</div>
               </div>
             </div>
           </Button>
@@ -143,15 +143,15 @@ export const SignInForm: React.FC = () => {
             size="sm"
             className="w-full text-left justify-start"
             onClick={() => {
-              setValue('email', 'mariama@immosenegal.com')
-              setValue('password', 'agent123')
+              setValue('email', 'agent.demo@immosenegal.com')
+              setValue('password', 'demo123456')
             }}
           >
             <div className="flex items-center">
               <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
               <div>
                 <div className="font-medium">Agent</div>
-                <div className="text-xs text-gray-500">mariama@immosenegal.com</div>
+                <div className="text-xs text-gray-500">agent.demo@immosenegal.com</div>
               </div>
             </div>
           </Button>
@@ -162,15 +162,15 @@ export const SignInForm: React.FC = () => {
             size="sm"
             className="w-full text-left justify-start"
             onClick={() => {
-              setValue('email', 'absa@email.com')
-              setValue('password', 'client123')
+              setValue('email', 'client.demo@immosenegal.com')
+              setValue('password', 'demo123456')
             }}
           >
             <div className="flex items-center">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
               <div>
                 <div className="font-medium">Client</div>
-                <div className="text-xs text-gray-500">absa@email.com</div>
+                <div className="text-xs text-gray-500">client.demo@immosenegal.com</div>
               </div>
             </div>
           </Button>

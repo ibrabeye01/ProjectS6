@@ -1,89 +1,165 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { mockUsers, MockUser } from '../data/mockData'
+import { supabase } from '../lib/supabase'
+import type { User } from '@supabase/supabase-js'
+import type { Profile } from '../lib/supabase'
 
 interface AuthState {
+  user: User | null
+  profile: Profile | null
   isAuthenticated: boolean
-  profile: MockUser | null
+  loading: boolean
   signIn: (email: string, password: string) => Promise<void>
-  signUp: (userData: Omit<MockUser, 'id'>) => Promise<void>
-  signOut: () => void
-  updateProfile: (data: Partial<MockUser>) => void
+  signUp: (userData: {
+    email: string
+    password: string
+    full_name: string
+    phone?: string
+    role: 'admin' | 'agent' | 'client'
+  }) => Promise<void>
+  signOut: () => Promise<void>
+  fetchProfile: () => Promise<void>
+  updateProfile: (data: Partial<Profile>) => Promise<void>
+  initialize: () => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      isAuthenticated: false,
+      user: null,
       profile: null,
+      isAuthenticated: false,
+      loading: true,
+
+      initialize: async () => {
+        try {
+          const { data: { session } } = await supabase.auth.getSession()
+          
+          if (session?.user) {
+            set({ user: session.user, isAuthenticated: true })
+            await get().fetchProfile()
+          }
+        } catch (error) {
+          console.error('Error initializing auth:', error)
+        } finally {
+          set({ loading: false })
+        }
+      },
 
       signIn: async (email: string, password: string) => {
-        // Simulation d'une authentification
-        const user = mockUsers.find(u => u.email === email)
-        
-        if (!user) {
-          throw new Error('Invalid credentials')
-        }
-        
-        // Mots de passe par défaut selon le rôle
-        const defaultPasswords = {
-          admin: 'admin123',
-          agent: 'agent123',
-          client: 'client123'
-        }
-        
-        if (password !== defaultPasswords[user.role]) {
-          throw new Error('Invalid credentials')
-        }
+        set({ loading: true })
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          })
 
-        set({
-          isAuthenticated: true,
-          profile: user,
-        })
+          if (error) throw error
+
+          if (data.user) {
+            set({ user: data.user, isAuthenticated: true })
+            await get().fetchProfile()
+          }
+        } catch (error: any) {
+          throw new Error(error.message || 'Erreur de connexion')
+        } finally {
+          set({ loading: false })
+        }
       },
 
       signUp: async (userData) => {
-        // Simulation d'une inscription
-        const newUser: MockUser = {
-          ...userData,
-          id: `user_${Date.now()}`,
-        }
+        set({ loading: true })
+        try {
+          const { data, error } = await supabase.auth.signUp({
+            email: userData.email,
+            password: userData.password,
+          })
 
-        // Ajouter l'utilisateur à la liste (simulation)
-        mockUsers.push(newUser)
+          if (error) throw error
 
-        set({
-          isAuthenticated: true,
-          profile: newUser,
-        })
-        
-        // Redirection selon le rôle
-        if (newUser.role === 'admin') {
-          window.location.href = '/dashboard'
-        } else if (newUser.role === 'agent') {
-          window.location.href = '/dashboard'
-        } else {
-          window.location.href = '/dashboard'
+          if (data.user) {
+            // Create profile
+            const { error: profileError } = await supabase
+              .from('profiles')
+              .insert({
+                id: data.user.id,
+                full_name: userData.full_name,
+                email: userData.email,
+                phone: userData.phone,
+                role: userData.role,
+              })
+
+            if (profileError) throw profileError
+
+            set({ user: data.user, isAuthenticated: true })
+            await get().fetchProfile()
+          }
+        } catch (error: any) {
+          throw new Error(error.message || 'Erreur lors de la création du compte')
+        } finally {
+          set({ loading: false })
         }
       },
 
-      signOut: () => {
-        set({
-          isAuthenticated: false,
-          profile: null,
-        })
+      signOut: async () => {
+        try {
+          const { error } = await supabase.auth.signOut()
+          if (error) throw error
+
+          set({
+            user: null,
+            profile: null,
+            isAuthenticated: false,
+          })
+        } catch (error: any) {
+          throw new Error(error.message || 'Erreur lors de la déconnexion')
+        }
       },
 
-      updateProfile: (data) => {
-        const { profile } = get()
-        if (profile) {
-          const updatedProfile = { ...profile, ...data }
-          set({ profile: updatedProfile })
+      fetchProfile: async () => {
+        const { user } = get()
+        if (!user) return
+
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single()
+
+          if (error) throw error
+
+          set({ profile: data })
+        } catch (error: any) {
+          console.error('Error fetching profile:', error)
+        }
+      },
+
+      updateProfile: async (data) => {
+        const { user } = get()
+        if (!user) return
+
+        try {
+          const { error } = await supabase
+            .from('profiles')
+            .update(data)
+            .eq('id', user.id)
+
+          if (error) throw error
+
+          await get().fetchProfile()
+        } catch (error: any) {
+          throw new Error(error.message || 'Erreur lors de la mise à jour du profil')
         }
       },
     }),
     {
       name: 'auth-storage',
+      partialize: (state) => ({
+        user: state.user,
+        profile: state.profile,
+        isAuthenticated: state.isAuthenticated,
+      }),
     }
   )
 )

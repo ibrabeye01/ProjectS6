@@ -1,12 +1,13 @@
 import { create } from 'zustand'
-import { mockUsers, MockUser } from '../data/mockData'
+import { supabase } from '../lib/supabase'
+import type { Profile } from '../lib/supabase'
 
 interface UserState {
-  users: MockUser[]
+  users: Profile[]
   loading: boolean
   fetchUsers: () => Promise<void>
-  addUser: (user: Omit<MockUser, 'id'>) => Promise<void>
-  updateUser: (id: string, user: Partial<MockUser>) => Promise<void>
+  addUser: (user: Omit<Profile, 'id' | 'created_at' | 'updated_at'>) => Promise<void>
+  updateUser: (id: string, user: Partial<Profile>) => Promise<void>
   deleteUser: (id: string) => Promise<void>
 }
 
@@ -16,34 +17,82 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   fetchUsers: async () => {
     set({ loading: true })
-    // Simulation d'un appel API
-    setTimeout(() => {
-      set({ users: mockUsers, loading: false })
-    }, 300)
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+
+      set({ users: data || [] })
+    } catch (error: any) {
+      console.error('Error fetching users:', error)
+    } finally {
+      set({ loading: false })
+    }
   },
 
   addUser: async (userData) => {
-    const newUser: MockUser = {
-      ...userData,
-      id: `user_${Date.now()}`,
+    try {
+      // For adding users, we would typically use Supabase Auth
+      // This is a simplified version for demo purposes
+      const { data, error } = await supabase.auth.admin.createUser({
+        email: userData.email,
+        password: 'temporary123', // In real app, generate secure password
+        email_confirm: true,
+      })
+
+      if (error) throw error
+
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: data.user.id,
+            ...userData,
+          })
+
+        if (profileError) throw profileError
+
+        await get().fetchUsers()
+      }
+    } catch (error: any) {
+      throw new Error(error.message || 'Erreur lors de l\'ajout de l\'utilisateur')
     }
-    
-    set(state => ({
-      users: [...state.users, newUser]
-    }))
   },
 
   updateUser: async (id, userData) => {
-    set(state => ({
-      users: state.users.map(user =>
-        user.id === id ? { ...user, ...userData } : user
-      )
-    }))
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update(userData)
+        .eq('id', id)
+
+      if (error) throw error
+
+      set(state => ({
+        users: state.users.map(user =>
+          user.id === id ? { ...user, ...userData } : user
+        )
+      }))
+    } catch (error: any) {
+      throw new Error(error.message || 'Erreur lors de la modification de l\'utilisateur')
+    }
   },
 
   deleteUser: async (id) => {
-    set(state => ({
-      users: state.users.filter(user => user.id !== id)
-    }))
+    try {
+      // Delete from auth (admin only)
+      const { error: authError } = await supabase.auth.admin.deleteUser(id)
+      if (authError) throw authError
+
+      // Profile will be deleted automatically due to CASCADE
+      set(state => ({
+        users: state.users.filter(user => user.id !== id)
+      }))
+    } catch (error: any) {
+      throw new Error(error.message || 'Erreur lors de la suppression de l\'utilisateur')
+    }
   },
 }))

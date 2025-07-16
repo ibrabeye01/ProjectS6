@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { mockProperties, MockProperty } from '../data/mockData'
+import { supabase } from '../lib/supabase'
+import type { Property } from '../lib/supabase'
 
 interface PropertyFilters {
   type?: string
@@ -11,15 +12,15 @@ interface PropertyFilters {
 }
 
 interface PropertyState {
-  properties: MockProperty[]
+  properties: Property[]
   filters: PropertyFilters
   loading: boolean
   fetchProperties: () => Promise<void>
-  addProperty: (property: Omit<MockProperty, 'id'>) => Promise<void>
-  updateProperty: (id: string, property: Partial<MockProperty>) => Promise<void>
+  addProperty: (property: Omit<Property, 'id' | 'created_at' | 'updated_at'>) => Promise<void>
+  updateProperty: (id: string, property: Partial<Property>) => Promise<void>
   deleteProperty: (id: string) => Promise<void>
   setFilters: (filters: PropertyFilters) => void
-  getFilteredProperties: () => MockProperty[]
+  getFilteredProperties: () => Property[]
 }
 
 export const usePropertyStore = create<PropertyState>((set, get) => ({
@@ -29,35 +30,83 @@ export const usePropertyStore = create<PropertyState>((set, get) => ({
 
   fetchProperties: async () => {
     set({ loading: true })
-    // Simulation d'un appel API
-    setTimeout(() => {
-      set({ properties: mockProperties, loading: false })
-    }, 500)
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .select(`
+          *,
+          profiles:agent_id (
+            full_name,
+            email,
+            phone
+          )
+        `)
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+
+      set({ properties: data || [] })
+    } catch (error: any) {
+      console.error('Error fetching properties:', error)
+    } finally {
+      set({ loading: false })
+    }
   },
 
   addProperty: async (propertyData) => {
-    const newProperty: MockProperty = {
-      ...propertyData,
-      id: `property_${Date.now()}`,
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .insert(propertyData)
+        .select()
+        .single()
+
+      if (error) throw error
+
+      set(state => ({
+        properties: [data, ...state.properties]
+      }))
+    } catch (error: any) {
+      throw new Error(error.message || 'Erreur lors de l\'ajout du bien')
     }
-    
-    set(state => ({
-      properties: [...state.properties, newProperty]
-    }))
   },
 
   updateProperty: async (id, propertyData) => {
-    set(state => ({
-      properties: state.properties.map(property =>
-        property.id === id ? { ...property, ...propertyData } : property
-      )
-    }))
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .update(propertyData)
+        .eq('id', id)
+        .select()
+        .single()
+
+      if (error) throw error
+
+      set(state => ({
+        properties: state.properties.map(property =>
+          property.id === id ? data : property
+        )
+      }))
+    } catch (error: any) {
+      throw new Error(error.message || 'Erreur lors de la modification du bien')
+    }
   },
 
   deleteProperty: async (id) => {
-    set(state => ({
-      properties: state.properties.filter(property => property.id !== id)
-    }))
+    try {
+      const { error } = await supabase
+        .from('properties')
+        .delete()
+        .eq('id', id)
+
+      if (error) throw error
+
+      set(state => ({
+        properties: state.properties.filter(property => property.id !== id)
+      }))
+    } catch (error: any) {
+      throw new Error(error.message || 'Erreur lors de la suppression du bien')
+    }
   },
 
   setFilters: (filters) => {

@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { useAuthStore } from './stores/authStore'
 import { Layout } from './components/layout/Layout'
 import { AuthLayout } from './components/layout/AuthLayout'
 import { ProtectedRoute } from './components/auth/ProtectedRoute'
@@ -21,6 +22,23 @@ import { SignIn } from './pages/auth/SignIn'
 import { SignUp } from './pages/auth/SignUp'
 
 function App() {
+  const { initialize, loading } = useAuthStore()
+
+  React.useEffect(() => {
+    initialize()
+  }, [initialize])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Chargement...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <Router>
       <div className="App">
